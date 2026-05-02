@@ -1,0 +1,668 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+
+    <!-- Link icon font awesome -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css"
+      integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+
+    <!-- link script -->
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.11.0/axios.min.js"
+      integrity="sha512-h9644v03pHqrIHThkvXhB2PJ8zf5E9IyVnrSfZg8Yj8k4RsO4zldcQc4Bi9iVLUCCsqNY0b4WXVV4UB+wbWENA=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    ></script>
+
+    <!-- link css -->
+    <link rel="stylesheet" href="./css/output.css" />
+  </head>
+  <body
+    class="bg-slate-50 min-h-screen font-sans text-slate-900 scroll-smooth antialiased"
+  >
+    <!-- header -->
+    <header
+      class="sticky top-0 z-50 bg-white/70 backdrop-blur-xl border-b border-slate-200 shadow-sm"
+    >
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex items-center justify-between h-20">
+          <h1
+            class="text-2xl font-black tracking-tight text-indigo-600 uppercase"
+          >
+            TL<span class="text-slate-800">Phone</span>
+          </h1>
+
+          <div class="flex items-center gap-6">
+            <a
+              href="./admin.html"
+              class="text-sm font-medium text-slate-600 hover:text-indigo-600 transition-colors"
+            >
+              Quản trị viên
+            </a>
+
+            <button
+              id="btnGioHang"
+              class="group relative flex items-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white px-5 py-2.5 rounded-xl transition-all duration-300 shadow-lg shadow-indigo-200 active:scale-95 hover:shadow-indigo-300"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="h-5 w-5"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"
+                />
+              </svg>
+              <span class="font-semibold">Giỏ hàng</span>
+              <span
+                id="badgeGioHang"
+                class="absolute -top-2 -right-2 bg-rose-500 text-white text-[10px] font-bold w-6 h-6 rounded-full flex items-center justify-center border-2 border-white group-hover:scale-110 transition-transform"
+                >0</span
+              >
+            </button>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+      <!-- Banner -->
+      <section>
+        <div class="flex flex-col lg:flex-row gap-6 mb-12">
+          <div
+            class="flex-1 lg:max-w-[320px] bg-[#2245ac] rounded-[2rem] p-8 text-white relative overflow-hidden flex flex-col justify-between shadow-lg min-h-[380px] hover:scale-[1.03] transition-all duration-500"
+          >
+            <div class="z-10">
+              <h2 class="text-3xl font-bold mb-2 leading-tight">
+                Refurb phones
+              </h2>
+              <div class="grid grid-cols-3 gap-1.5 w-12 opacity-30 mt-4">
+                <div class="w-2 h-2 bg-white rounded-sm"></div>
+                <div class="w-2 h-2 bg-white rounded-sm"></div>
+                <div class="w-2 h-2 bg-white rounded-sm"></div>
+                <div class="w-2 h-2 bg-white rounded-sm"></div>
+                <div class="w-2 h-2 bg-white rounded-sm"></div>
+                <div class="w-2 h-2 bg-white rounded-sm"></div>
+                <div class="w-2 h-2 bg-white rounded-sm"></div>
+                <div class="w-2 h-2 bg-white rounded-sm"></div>
+                <div class="w-2 h-2 bg-white rounded-sm"></div>
+              </div>
+            </div>
+
+            <div class="relative h-44 flex items-end justify-center mb-4">
+              <img
+                src="https://pngimg.com/uploads/iphone16/iphone16_PNG38.png"
+                class="relative z-10 h-60 object-contain drop-shadow-2xl group-hover:scale-110 transition duration-500"
+              />
+            </div>
+
+            <button
+              class="bg-white text-[#2245ac] font-bold py-3.5 rounded-xl hover:bg-blue-50 transition-colors z-10"
+            >
+              Explore Products
+            </button>
+          </div>
+
+          <div
+            class="flex-[2.5] bg-[#ff9f1c] rounded-[2rem] p-8 md:p-12 text-white relative overflow-hidden flex items-center shadow-lg min-h-[380px] hover:scale-[1.02] transition-all duration-500"
+          >
+            <div
+              class="absolute -left-20 top-1/2 -translate-y-1/2 w-[350px] h-[350px] bg-white/20 rounded-full"
+            ></div>
+
+            <div
+              class="flex flex-col md:flex-row items-center w-full gap-10 z-10"
+            >
+              <div class="w-56 md:w-80">
+                <img
+                  src="https://pngimg.com/uploads/iphone16/iphone16_PNG35.png"
+                  class="w-full drop-shadow-2xl"
+                  alt="Broken screen"
+                />
+              </div>
+
+              <div class="flex-1 text-center md:text-left space-y-6">
+                <h2 class="text-5xl md:text-7xl font-extrabold tracking-tight">
+                  Shopping phone?
+                </h2>
+                <p class="text-2xl md:text-3xl opacity-90 font-medium">
+                  Book a service.
+                </p>
+                <div class="pt-2">
+                  <button
+                    class="bg-white text-slate-900 font-bold py-4 px-10 rounded-xl hover:bg-slate-200 transition-all shadow-xl active:scale-95 text-lg"
+                  >
+                    Learn more
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Category -->
+      <section class="bg-gray-50 py-12 px-4">
+        <div class="max-w-7xl mx-auto">
+          <div
+            class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 gap-6 mt-10"
+          >
+            <div
+              class="group flex items-center justify-between bg-white p-6 rounded-xl border border-gray-100 shadow hover:shadow-xl hover:-translate-y-1 transition-all duration-300 cursor-pointer"
+            >
+              <div class="w-16 h-16 flex items-center justify-center">
+                <img
+                  src="https://static1.pocketnowimages.com/wordpress/wp-content/uploads/2023/09/pbi-iphone-15.png"
+                  alt="Phones"
+                  class="max-w-full max-h-full object-contain group-hover:scale-110 transition duration-300"
+                />
+              </div>
+              <span class="text-lg font-bold text-gray-800">Phones</span>
+            </div>
+
+            <div
+              class="group flex items-center justify-between bg-white p-6 rounded-xl border border-gray-100 shadow hover:shadow-xl hover:-translate-y-1 transition-all duration-300 cursor-pointer"
+            >
+              <div class="w-20 h-24 flex items-center justify-center">
+                <img
+                  src="https://cf.shopee.vn/file/0de0210e491ac877260f67ef96d3279b"
+                  alt="Equipment"
+                  class="max-w-full max-h-full object-contain group-hover:scale-110 transition duration-300"
+                />
+              </div>
+              <span class="text-lg font-bold text-gray-800">Equipment</span>
+            </div>
+
+            <div
+              class="group flex items-center justify-between bg-white p-6 rounded-xl border border-gray-100 shadow hover:shadow-xl hover:-translate-y-1 transition-all duration-300 cursor-pointer"
+            >
+              <div class="w-20 h-24 flex items-center justify-center">
+                <img
+                  src="https://static.esrgear.com/blog/wp-content/uploads/2022/09/iPhone-14-Pro-Max-Classic-Hybrid-Case-with-magsafe-2.jpg"
+                  alt="Cases"
+                  class="max-w-full max-h-full object-contain group-hover:scale-110 transition duration-300"
+                />
+              </div>
+              <span class="text-lg font-bold text-gray-800">Cases</span>
+            </div>
+
+            <div
+              class="group flex items-center justify-between bg-white p-6 rounded-xl border border-gray-100 shadow hover:shadow-xl hover:-translate-y-1 transition-all duration-300 cursor-pointer"
+            >
+              <div class="w-20 h-24 flex items-center justify-center">
+                <img
+                  src="https://product.hstatic.net/1000213339/product/havit-h628bt-black_b9156096ada2423ab1f2ac2758e30140_1024x1024.jpg"
+                  alt="Other"
+                  class="max-w-full max-h-full object-contain group-hover:scale-110 transition duration-300"
+                />
+              </div>
+              <span class="text-lg font-bold text-gray-800">Other</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Thanh search -->
+      <section>
+        <div class="max-w-4xl mx-auto mb-12">
+          <!-- WRAPPER -->
+          <div class="flex flex-col sm:flex-row gap-4">
+            <!-- SEARCH -->
+            <div class="relative group flex-1">
+              <div
+                class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none"
+              >
+                <svg
+                  class="h-5 w-5 text-slate-400 group-focus-within:text-indigo-500 transition-colors"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+                  />
+                </svg>
+              </div>
+
+              <input
+                type="search"
+                id="searchInput"
+                placeholder="Tìm kiếm điện thoại, phụ kiện..."
+                class="w-full pl-11 pr-4 py-4 bg-white border border-slate-200 rounded-2xl focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all duration-300 shadow-sm"
+              />
+            </div>
+
+            <!-- SELECT -->
+            <select
+              id="filterSelect"
+              class="px-4 py-4 border border-slate-200 rounded-2xl bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500/30 focus:border-indigo-500 transition hover:shadow-md"
+            >
+              <option value="">Tất cả loại</option>
+              <option value="Samsung">Samsung</option>
+              <option value="iphone">iPhone</option>
+            </select>
+          </div>
+        </div>
+      </section>
+
+      <!-- Loading  -->
+      <section>
+        <div
+          id="loading"
+          class="hidden flex flex-col items-center justify-center py-20"
+        >
+          <div
+            class="w-12 h-12 border-4 border-indigo-200 border-t-indigo-600 rounded-full animate-spin"
+          ></div>
+          <p class="mt-4 text-slate-500 font-medium tracking-wide">
+            Đang tải sản phẩm...
+          </p>
+        </div>
+      </section>
+
+      <!-- Danh sách sản phẩm  -->
+      <section>
+        <div
+          id="danhSachSP"
+          class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8"
+        >
+          <!-- <div
+            class="group bg-white shadow rounded-3xl border border-slate-100 p-4 transition-all duration-300 hover:shadow-2xl hover:shadow-indigo-100 hover:-translate-y-2"
+          >
+            <div
+              class="relative overflow-hidden rounded-2xl bg-slate-50 mb-6 aspect-square"
+            >
+              <img
+                src="https://images.hindustantimes.com/tech/htmobile4/apple-iphone-17-pro/heroimage/iphone-17-pro-model-unselect-gallery-2-202509-GEO-EMEA.jpg"
+                alt="Product"
+                class="w-full h-full object-contain mix-blend-multiply group-hover:scale-110 transition-transform duration-500"
+              />
+              <span
+                class="absolute top-3 left-3 bg-white/90 backdrop-blur px-3 py-1 rounded-full text-xs font-bold text-slate-600 shadow-sm"
+                >iPhone</span
+              >
+            </div>
+
+            <div class="space-y-2">
+              <h3 class="font-bold text-lg text-slate-800 line-clamp-1">
+                Iphone 17 Promax
+              </h3>
+              <p class="text-slate-500 text-sm line-clamp-2 leading-relaxed">
+                Bộ nhớ 256GB, camera cải tiến vượt bậc.
+              </p>
+              <p class="text-xl font-black text-indigo-600 pt-2 tracking-tight">
+                34.000.000 <span class="text-sm font-normal">VND</span>
+              </p>
+            </div>
+
+            <div class="flex gap-3 mt-6">
+              <button
+                class="flex-[2] bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold py-3 rounded-xl transition-colors"
+              >
+                Chi tiết
+              </button>
+              <button
+                class="flex-[3] bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-3 rounded-xl transition-all shadow-md active:scale-95 hover:shadow-lg"
+              >
+                Mua ngay
+              </button>
+            </div>
+          </div> -->
+        </div>
+      </section>
+    </main>
+
+    <!-- Banner dưới -->
+    <section class="w-full font-sans mt-10">
+      <div
+        class="w-full bg-[#032d60] min-h-[450px] flex items-center relative overflow-hidden hover:scale-[1.01] transition duration-500"
+      >
+        <!-- decoration -->
+        <div
+          class="absolute inset-0 opacity-10 pointer-events-none select-none"
+        >
+          <div
+            class="absolute top-10 left-10 border-2 border-white w-20 h-20 rotate-45"
+          ></div>
+          <div
+            class="absolute bottom-20 left-1/4 rounded-full border-2 border-white w-12 h-12"
+          ></div>
+          <div
+            class="absolute top-1/2 right-1/3 w-32 h-32 border border-white opacity-20 rotate-12"
+          ></div>
+        </div>
+
+        <!-- content  -->
+        <div
+          class="max-w-7xl mx-auto w-full px-6 md:px-16 lg:px-24 flex flex-col md:flex-row items-center justify-between relative z-10"
+        >
+          <!-- TEXT -->
+          <div class="text-white text-center md:text-left flex-1 py-10">
+            <h1
+              class="text-4xl md:text-6xl lg:text-7xl font-black uppercase leading-[0.9]"
+            >
+              Big Modern<br />
+              <span class="text-[#ffcc00]">Phone</span>
+            </h1>
+
+            <div class="mt-10">
+              <button
+                class="bg-white text-[#032d60] text-lg px-10 py-3 rounded font-bold hover:bg-yellow-300 transition-all shadow-lg active:scale-95"
+              >
+                Mua ngay
+              </button>
+            </div>
+          </div>
+
+          <!-- IMAGE -->
+          <div class="flex-1 flex justify-center md:justify-end py-10">
+            <div
+              class="w-72 md:w-80 lg:w-96 drop-shadow-[0_35px_35px_rgba(0,0,0,0.5)] rotate-2"
+            >
+              <img
+                src="https://imgs.hipertextual.com/wp-content/uploads/2024/11/iPhone-17-scaled.jpg"
+                class="w-full h-auto object-contain"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- FEATURES  -->
+      <div class="w-full bg-[#ff9900] py-8 border-t-4 border-[#ffb340]">
+        <!-- content -->
+        <div
+          class="max-w-7xl mx-auto px-6 md:px-16 lg:px-24 grid grid-cols-1 md:grid-cols-3 gap-10 items-center"
+        >
+          <!-- ITEM 1 -->
+          <div
+            class="flex items-start space-x-4 text-white hover:scale-105 transition duration-300"
+          >
+            <!-- ICON -->
+            <div
+              class="w-12 h-12 flex items-center justify-center bg-white/20 backdrop-blur rounded-full text-2xl"
+            >
+              <i class="fa-regular fa-clock"></i>
+            </div>
+
+            <!-- TEXT -->
+            <div>
+              <h3 class="font-extrabold text-xl uppercase italic">
+                Quick repair
+              </h3>
+              <p class="text-sm opacity-90">
+                Devices repaired within 24 hours!
+              </p>
+            </div>
+          </div>
+
+          <!-- ITEM 2 -->
+          <div
+            class="flex items-start space-x-4 text-white hover:scale-105 transition duration-300"
+          >
+            <div
+              class="w-12 h-12 flex items-center justify-center bg-white/20 backdrop-blur rounded-full text-2xl"
+            >
+              <i class="fa-solid fa-truck-fast"></i>
+            </div>
+
+            <div>
+              <h3 class="font-extrabold text-xl uppercase italic">
+                Free delivery
+              </h3>
+              <p class="text-sm opacity-90">Free delivery on selected items</p>
+            </div>
+          </div>
+
+          <!-- ITEM 3 -->
+          <div
+            class="flex items-start space-x-4 text-white hover:scale-105 transition duration-300"
+          >
+            <div
+              class="w-12 h-12 flex items-center justify-center bg-white/20 backdrop-blur rounded-full text-2xl"
+            >
+              <i class="fa-solid fa-ranking-star"></i>
+            </div>
+
+            <div>
+              <h3 class="font-extrabold text-xl uppercase italic">
+                Excellent ratings
+              </h3>
+              <p class="text-sm opacity-90">4.6+ rated on Google!</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Contact -->
+    <section id="contact" class="py-20">
+      <div class="max-w-7xl mx-auto px-4">
+        <!-- TITLE -->
+        <div class="text-center">
+          <h1 class="text-4xl font-bold text-black">CONTACT</h1>
+        </div>
+
+        <!-- CONTENT -->
+        <div class="mt-10 flex flex-col lg:flex-row gap-6">
+          <!-- MAP -->
+          <div
+            class="w-full lg:w-3/5 h-[400px] rounded-xl overflow-hidden shadow"
+          >
+            <iframe
+              class="w-full h-full border-0"
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3918.717338344031!2d106.6692950748057!3d10.832929989319272!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x317529c7e0062389%3A0x6044d393dbe44e8c!2zVHJ1bmcgVMOibSDEkMOgbyBU4bqhbyBM4bqtcCBUcsOsbmggQ3liZXJTb2Z0IC0gQ8ahIFPhu58gUXXhuq1uIEfDsiBW4bqlcCwgVFAuSENN!5e0!3m2!1svi!2s!4v1770638298853!5m2!1svi!2s"
+              loading="lazy"
+            >
+            </iframe>
+          </div>
+
+          <!-- FORM -->
+          <div class="w-full lg:w-2/5">
+            <form class="flex flex-col">
+              <input
+                type="text"
+                placeholder="Username"
+                class="mb-5 p-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all"
+              />
+
+              <input
+                type="text"
+                placeholder="Email Address"
+                class="mb-5 p-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all"
+              />
+
+              <textarea
+                placeholder="Ask a question"
+                rows="6"
+                class="mb-5 p-4 border border-gray-300 rounded-lg resize-y focus:outline-none focus:ring-2 focus:ring-black"
+              ></textarea>
+
+              <button
+                class="bg-blue-500 text-white py-4 px-6 rounded-lg transition-all duration-500 hover:bg-blue-700"
+              >
+                SUBMIT
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footers -->
+    <footer class="pt-24 mt-12 bg-gray-100">
+      <div
+        class="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12"
+      >
+        <!-- Logo + text  -->
+        <div>
+          <p class="text-gray-500 font-bold text-3xl leading-relaxed mt-5 mb-8">
+            TLPhone
+          </p>
+        </div>
+
+        <!-- Social -->
+        <div>
+          <h2 class="font-bold">Socials</h2>
+          <p class="text-gray-500 leading-relaxed mt-5 mb-8">
+            truongtu678r@gmail.com
+          </p>
+
+          <div class="flex gap-4">
+            <div
+              class="w-10 h-10 bg-white rounded-full flex items-center justify-center shadow hover:bg-indigo-600 hover:text-white transition-all duration-300"
+            >
+              <i class="fa-brands fa-facebook"></i>
+            </div>
+
+            <div
+              class="w-10 h-10 bg-white rounded-full flex items-center justify-center shadow hover:bg-indigo-600 hover:text-white transition-all duration-300"
+            >
+              <i class="fa-brands fa-twitter"></i>
+            </div>
+
+            <div
+              class="w-10 h-10 bg-white rounded-full flex items-center justify-center shadow hover:bg-indigo-600 hover:text-white transition-all duration-300"
+            >
+              <i class="fa-brands fa-instagram"></i>
+            </div>
+
+            <div
+              class="w-10 h-10 bg-white rounded-full flex items-center justify-center shadow hover:bg-indigo-600 hover:text-white transition-all duration-300"
+            >
+              <i class="fa-brands fa-skype"></i>
+            </div>
+          </div>
+        </div>
+
+        <!-- Quick Links -->
+        <div>
+          <h2 class="font-bold">Quick Links</h2>
+          <ul class="text-gray-500 leading-relaxed mt-5 mb-8 space-y-2">
+            <li>
+              <a class="hover:text-indigo-600 transition" href="">About</a>
+            </li>
+            <li>
+              <a class="hover:text-indigo-600 transition" href="">Category</a>
+            </li>
+            <li>
+              <a class="hover:text-indigo-600 transition" href=""
+                >Testimonial</a
+              >
+            </li>
+            <li>
+              <a class="hover:text-indigo-600 transition" href="">Contact</a>
+            </li>
+          </ul>
+        </div>
+
+        <!-- Location & Contact -->
+        <div>
+          <h2 class="font-bold">Location & Contact</h2>
+          <p class="text-gray-500 leading-relaxed mt-5 mb-8">
+            2/21 Bach Dang Street, Tan Binh District, HCM city <br />
+            (704) 555-0127
+          </p>
+        </div>
+      </div>
+
+      <!-- line + copyright -->
+      <div
+        class="max-w-7xl mx-auto px-6 border-t border-gray-300 text-center py-6 text-gray-500"
+      >
+        Designed And Developed by TLPhone
+      </div>
+    </footer>
+
+    <!-- popup chi tiết sản phầm - default: hidden. Khi user click mới show  -->
+    <div
+      id="popupChiTiet"
+      class="hidden fixed z-50 inset-0 flex items-center justify-center p-4"
+    >
+      <div
+        id="overplay"
+        class="absolute inset-0 bg-black/60 backdrop-blur-sm"
+        onclick="closePopupChiTiet()"
+      ></div>
+
+      <div
+        class="relative bg-white rounded-3xl shadow-2xl w-full max-w-4xl max-h-[90vh] overflow-y-auto"
+      >
+        <button
+          id="btnClose"
+          onclick="closePopupChiTiet()"
+          class="absolute top-4 right-5 z-50 font-bold text-slate-400 text-2xl hover:text-slate-900 transition-colors"
+        >
+          ✕
+        </button>
+
+        <div id="popupContent" class="p-8"></div>
+      </div>
+    </div>
+
+    <!-- popup giỏ hàng sản phầm - default: hidden. Khi user click mới show  -->
+    <div
+      id="popupGioHang"
+      class="hidden fixed inset-0 z-50 flex items-center justify-center"
+    >
+      <!-- overlay -->
+      <div
+        id="overplayGioHang"
+        class="absolute inset-0 bg-black/60 backdrop-blur-sm"
+      ></div>
+
+      <!-- popup -->
+      <div
+        class="relative w-full max-w-3xl bg-white rounded-3xl shadow-2xl overflow-hidden animate-fadeIn"
+      >
+        <!-- header -->
+        <div class="flex items-center justify-between px-6 py-4 border-b">
+          <h2 class="text-xl font-bold text-slate-800">🛒 Giỏ hàng của bạn</h2>
+
+          <button
+            id="btnCloseGioHang"
+            onclick="closePopupGioHang()"
+            class="text-slate-400 hover:text-red-500 text-2xl font-bold"
+          >
+            ✕
+          </button>
+        </div>
+
+        <!-- content -->
+        <div
+          id="noiDungGioHang"
+          class="max-h-[60vh] overflow-y-auto px-4 py-2"
+        ></div>
+
+        <!-- footer -->
+        <div
+          class="border-t px-6 py-4 flex items-center justify-between bg-slate-50"
+        >
+          <button
+            class="bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-3 rounded-xl font-semibold shadow"
+          >
+            Thanh toán
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <script type="module" src="./js/app.js"></script>
+  </body>
+</html>
