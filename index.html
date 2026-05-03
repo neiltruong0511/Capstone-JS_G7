@@ -256,6 +256,9 @@
               <option value="">Tất cả loại</option>
               <option value="Samsung">Samsung</option>
               <option value="iphone">iPhone</option>
+              <!-- SORT -->
+              <option value="price_asc">Giá tăng dần</option>
+              <option value="price_desc">Giá giảm dần</option>
             </select>
           </div>
         </div>
@@ -629,7 +632,7 @@
 
       <!-- popup -->
       <div
-        class="relative w-full max-w-3xl bg-white rounded-3xl shadow-2xl overflow-hidden animate-fadeIn"
+        class="relative w-full max-w-6xl h-[85vh] bg-white rounded-3xl shadow-2xl overflow-hidden flex flex-col animate-fadeIn"
       >
         <!-- header -->
         <div class="flex items-center justify-between px-6 py-4 border-b">
@@ -645,21 +648,7 @@
         </div>
 
         <!-- content -->
-        <div
-          id="noiDungGioHang"
-          class="max-h-[60vh] overflow-y-auto px-4 py-2"
-        ></div>
-
-        <!-- footer -->
-        <div
-          class="border-t px-6 py-4 flex items-center justify-between bg-slate-50"
-        >
-          <button
-            class="bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-3 rounded-xl font-semibold shadow"
-          >
-            Thanh toán
-          </button>
-        </div>
+        <div id="noiDungGioHang" class="flex flex-1 overflow-hidden"></div>
       </div>
     </div>
 
