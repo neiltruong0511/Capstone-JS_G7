@@ -3,37 +3,40 @@ import { el, state } from './core.js'
 
 
 
-
 export const filterSP = () => {
-    // B1: lấy giá trị từ ô search và select
-    // NGUYÊN TẮC: toLowerCase: chuyển chuỗi về chữ thường, trim: xóa khoảng trắng đầu và cuối chuỗi
     const keyword = el.searchSP.value.toLowerCase().trim()
     const type = el.filterSP.value
 
-    //Tạo biến để lưu kết quả sau khi filter
     let ketQua = [...state.danhSachSP]
 
-    //B2: Lọc sản phẩm theo từ khóa và loại sản phẩm
-    //B2.1: filter theo từ khóa
+    // filter keyword
     if (keyword) {
         ketQua = ketQua.filter((phone) => {
-            // Tên phone
             const phoneName = phone.name.toLowerCase()
-            // mô tả phone
             const phoneDesc = phone.desc.toLowerCase()
-
-            // includes: tìm kiếm tương đối, trả về true nếu chuỗi chứa từ khóa, ngược lại trả về false
             return phoneName.includes(keyword) || phoneDesc.includes(keyword)
         })
     }
 
-    //B2.2: filter theo loại sản phẩm
-    if (type != "") { // nếu type khác rỗng (tức là có chọn loại sản phẩm)
-        ketQua = ketQua.filter((phone) => phone.type.toLowerCase() === type.toLowerCase())
+    //  filter khi là loại sản phẩm
+    if (type !== "" && type !== "price_asc" && type !== "price_desc") {
+        ketQua = ketQua.filter(
+            (phone) => phone.type.toLowerCase() === type.toLowerCase()
+        )
     }
-    // B3: hiển thị kết quả sau khi filter
+
+    // sort
+    if (type === "price_asc") {
+        ketQua.sort((a, b) => a.price - b.price)
+    }
+
+    if (type === "price_desc") {
+        ketQua.sort((a, b) => b.price - a.price)
+    }
+
     renderDanhSachSP(ketQua)
 }
+
 const debounce = () => {
     // HỦY TIMER CŨ NẾU USER NHẬP TIẾP
     clearTimeout(state.timerId)

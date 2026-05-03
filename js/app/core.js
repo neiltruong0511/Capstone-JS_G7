@@ -19,7 +19,10 @@ export const el = {
     
     // Dom tới số lượng sản phẩm trong giỏ hàng
     badgeGioHang: document.getElementById("badgeGioHang"),
-    noiDungGioHang: document.getElementById("noiDungGioHang")
+    noiDungGioHang: document.getElementById("noiDungGioHang"),
+
+    //Thanh toán
+    phuongThucThanhToan: "cod",
 }
 
 export const state = {

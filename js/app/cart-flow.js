@@ -1,171 +1,226 @@
 import { state, el } from "./core.js"
 import { capNhatSoLuongGioHang } from './product-flow.js'
 
+// ================= QUANTITY =================
 window.tangSoLuong = (phoneId) => {
-    //tìm sản phẩm trong giỏ hàng dựa trên id
-    const item = state.gioHang.find((phone) => phone.id == phoneId)
-    
-    // Nếu không tìm thấy sản phẩm thì hiển thị thông báo lỗi 
-    if (!item) {
-        alert("Không tìm thấy sản phẩm trong giỏ hàng")
-        return
-    }
+    const item = state.gioHang.find(p => p.id == phoneId)
 
-    // nếu tìm thấy sản phẩm thì tăng số lượng lên 1
-    item.soLuong += 1
-    
-    // cập nhật lại số lượng sản phẩm trong giỏ hàng hiển thị ở badge
+    if (!item) return alert("Không tìm thấy sản phẩm")
+
+    item.soLuong++
     capNhatSoLuongGioHang()
-
-    // render: lại giỏ hàng để cập nhật số lượng và tổng tiền
     renderGioHang()
 }
 
 window.giamSoLuong = (phoneId) => {
-    // tìm sản phẩm trong giỏ hàng dựa trên id
-    const item = state.gioHang.find((phone) => phone.id == phoneId)
+    const item = state.gioHang.find(p => p.id == phoneId)
 
-    // nếu không tìm thấy sản phẩm thì hiển thị thông báo lỗi
-    if (!item) {
-        alert("Không tìm thấy sản phẩm trong giỏ hàng")
-        return
-    }
-    // nếu tìm thấy sản phẩm
-    // nếu số lượng bằng 1 => không cho giảm nữa
-    if (item.soLuong === 1) {
-        return
-    }
+    if (!item) return alert("Không tìm thấy sản phẩm")
 
-    // nếu số lượng lớn hơn 1 thì giảm số lượng xuống 1
-    item.soLuong -= 1
+    if (item.soLuong === 1) return
 
-    // cập nhật lại số lượng sản phẩm trong giỏ hàng hiển thị ở badge
+    item.soLuong--
     capNhatSoLuongGioHang()
-
-    // render lại giỏ hàng để cập nhật số lượng và tổng tiền
     renderGioHang()
 }
 
 window.xoaSanPham = (phoneId) => {
-    // cập nhật mảng giỏ hàng không chứa sản phẩm muốn xóa
-    state.gioHang = state.gioHang.filter((phone) => phone.id != phoneId)
+    state.gioHang = state.gioHang.filter(p => p.id != phoneId)
 
-    // cập nhật lại số lượng sản phẩm trong giỏ hàng hiển thị ở badge
     capNhatSoLuongGioHang()
-
-    // render lại giỏ hàng để cập nhật danh sách và tổng tiền
     renderGioHang()
 }
 
+// ================= RENDER QR =================
+const renderQR = () => {
+    const qrBox = document.getElementById("qrBox")
+    if (!qrBox) return
+
+    if (state.phuongThucThanhToan === "bank") {
+        qrBox.innerHTML = `
+            <p class="text-sm mb-2">Quét mã chuyển khoản</p>
+            <img 
+                src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=bank_demo"
+                class="mx-auto"
+            />
+        `
+    } 
+    else if (state.phuongThucThanhToan === "momo") {
+        qrBox.innerHTML = `
+            <p class="text-sm mb-2">Quét mã MoMo</p>
+            <img 
+                src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=momo_demo"
+                class="mx-auto"
+            />
+        `
+    } 
+    else {
+        qrBox.innerHTML = ""
+    }
+}
+
+// ================= EVENT PAYMENT =================
+const bindPaymentEvent = () => {
+    const radios = document.querySelectorAll('input[name="payment"]')
+
+    radios.forEach(radio => {
+        radio.addEventListener("change", (e) => {
+            state.phuongThucThanhToan = e.target.value
+            renderQR()
+        })
+    })
+}
+
+// ================= RENDER CART =================
 export const renderGioHang = () => {
-    // nếu giỏ hàng trống thì hiển thị thông báo
-    if(state.gioHang.length === 0) {
-        el.popupGioHang.classList.remove("hidden")
+
+    el.popupGioHang.classList.remove("hidden")
+
+    if (state.gioHang.length === 0) {
         el.noiDungGioHang.innerHTML = `
-            <h2>Giỏ hàng</h2>
-            <p class="text-gray-500 text-center">Giỏ hàng của bạn đang trống</p>
+            <div class="flex items-center justify-center w-full h-full text-center">
+                <div>
+                    <h2 class="text-xl font-bold mb-2">Giỏ hàng</h2>
+                    <p class="text-gray-500">Giỏ hàng của bạn đang trống</p>
+                </div>
+            </div>
         `
         return
     }
-    
-    // tạo html để hiển thị giỏ hàng
-    // list item -> map -> list html -> join("") -> string html -> innerHTML
-    const contentHtmlList = state.gioHang.map((item) => {
-        // thêm logic disable button giảm số lượng khi số lượng bằng 1, không cho giảm nữa
-        const disableGiam = item.soLuong === 1 ? "disabled opacity-50 cursor-not-allowed" : ""
 
-        return  `
-           <div class="group flex items-center gap-4 p-4 bg-white rounded-2xl border border-slate-100 shadow-sm hover:shadow-md hover:-translate-y-[2px] transition-all duration-300">
+    const list = state.gioHang.map(item => {
+        const disable = item.soLuong === 1 ? "opacity-30 pointer-events-none" : ""
 
-              <!-- IMAGE -->
-              <div class="w-20 h-20 bg-slate-50 rounded-xl flex items-center justify-center overflow-hidden">
-                <img 
-                  src="${item.img}" 
-                  alt="${item.name}" 
-                  class="max-w-[85%] max-h-[85%] object-contain transition-transform duration-300 group-hover:scale-105"
-                />
-              </div>
+        return `
+        <div class="flex gap-4 p-4 border-b hover:bg-slate-50 transition">
 
-              <!-- INFO -->
-              <div class="flex-1 min-w-0">
-                <h3 class="font-semibold text-slate-800 line-clamp-1 text-[15px]">
-                  ${item.name}
+            <!-- IMG -->
+            <div class="w-20 h-20 bg-slate-100 rounded-xl flex items-center justify-center shrink-0">
+                <img src="${item.img}" class="max-w-[85%] max-h-[85%] object-contain"/>
+            </div>
+
+            <!-- INFO -->
+            <div class="flex-1">
+                <h3 class="font-semibold text-slate-800 line-clamp-1">
+                    ${item.name}
                 </h3>
 
-                <p class="text-slate-500 text-xs mt-1">
-                  Giá:
-                </p>
+                <!-- QTY -->
+                <div class="flex items-center mt-2">
 
-                <div class="text-indigo-600 font-bold text-sm">
-                  ${item.price.toLocaleString()} VND
+                  <div class="flex items-center bg-white border border-slate-200 rounded-full shadow-sm overflow-hidden">
+
+                    <button onclick="giamSoLuong(${item.id})"
+                      class="w-9 h-9 flex items-center justify-center text-slate-600 hover:bg-slate-100 transition ${disable}">
+                      −
+                    </button>
+
+                    <span class="w-10 text-center text-sm font-semibold text-slate-800">
+                      ${item.soLuong}
+                    </span>
+
+                    <button onclick="tangSoLuong(${item.id})"
+                      class="w-9 h-9 flex items-center justify-center text-slate-500 hover:bg-slate-800 transition">
+                      +
+                    </button>
+
+                  </div>
+
                 </div>
-              </div>
+            </div>
 
-              <!-- QUANTITY -->
-              <div class="flex items-center bg-slate-100 rounded-full px-2 py-1 shadow-inner">
+            <!-- TOTAL -->
+            <div class="text-right flex flex-col items-end gap-2">
 
-                <!-- MINUS -->
-                <button
-                  onclick="giamSoLuong(${item.id})"
-                  class="w-8 h-8 flex items-center justify-center rounded-full 
-                        text-slate-500 hover:bg-slate-200 active:scale-95 
-                        transition-all duration-200 ${disableGiam}"
-                >
-                  −
-                </button>
-
-                <!-- NUMBER -->
-                <span class="w-10 text-center font-semibold text-slate-800 text-sm">
-                  ${item.soLuong}
-                </span>
-
-                <!-- PLUS -->
-                <button
-                  onclick="tangSoLuong(${item.id})"
-                  class="w-8 h-8 flex items-center justify-center rounded-full 
-                        text-black shadow-md 
-                        hover:bg-slate-200 active:scale-95 
-                        transition-all duration-200"
-                >
-                  +
-                </button>
-              </div>
-
-              <!-- TOTAL PRICE -->
-              <div class="w-32 text-right">
-                <p class="text-xs text-slate-400">Tổng</p>
-                <p class="font-bold text-slate-900 text-[15px]">
-                  ${(item.price * item.soLuong).toLocaleString()}
-                  <span class="text-xs font-medium text-slate-400">VND</span>
+                <p class="font-bold text-slate-900">
+                    ${(item.price * item.soLuong).toLocaleString()} VND
                 </p>
-              </div>
 
-              <!-- DELETE -->
-              <button
-                onclick="xoaSanPham(${item.id})"
-                class="ml-2 w-9 h-9 flex items-center justify-center rounded-full 
-                      text-slate-400 hover:text-red-500 hover:bg-red-50 
-                      transition-all duration-200"
-              >
-                ✕
-              </button>
+                <button onclick="xoaSanPham(${item.id})"
+                  class="px-3 py-1 text-sm font-medium text-red-600 
+                        hover:text-red-700 transition">
+                  Xóa
+                </button>
 
             </div>
+
+        </div>
         `
     })
 
-    // gộp tất cả các thẻ html lại thành một chuỗi và hiển thị lên trang
-    el.noiDungGioHang.innerHTML = contentHtmlList.join("")
+    const tongTien = state.gioHang.reduce((t, i) => t + i.price * i.soLuong, 0)
 
-    //Thêm logic tính tổng tiền của giỏ hàng 
-    const tongTien = state.gioHang.reduce((tong, item) => tong + item.price * item.soLuong, 0) 
+    // ✅ render 2 cột
+    el.noiDungGioHang.innerHTML = `
+        <!-- LEFT -->
+        <div class="flex-1 overflow-y-auto">
+            ${list.join("")}
+        </div>
 
-    //Ghép html hiển thị tổng tiền vào cuối nội dung giỏ hàng
-    el.noiDungGioHang.innerHTML += `
-        <div class="flex justify-end py-4 px-3">
-            <p class="text-lg font-bold text-gray-900">Tổng tiền: ${tongTien.toLocaleString()} <span class="text-xs uppercase">vnd</span></p>
+        <!-- RIGHT -->
+        <div class="w-[350px] border-l p-6 bg-slate-50 flex flex-col justify-between">
+
+            <div>
+                <h3 class="font-bold text-lg mb-4">Thanh toán</h3>
+
+                <div class="flex justify-between mb-4 text-lg font-semibold">
+                    <span>Tổng tiền</span>
+                    <span class="text-indigo-600">
+                        ${tongTien.toLocaleString()} VND
+                    </span>
+                </div>
+
+                <div class="space-y-3 text-sm">
+
+                    <label class="flex items-center gap-2 cursor-pointer">
+                        <input type="radio" name="payment" value="cod"
+                        ${state.phuongThucThanhToan === "cod" ? "checked" : ""}/>
+                        Thanh toán khi nhận hàng ( COD )
+                    </label>
+
+                    <label class="flex items-center gap-2 cursor-pointer">
+                        <input type="radio" name="payment" value="bank"
+                        ${state.phuongThucThanhToan === "bank" ? "checked" : ""}/>
+                        Ngân hàng
+                    </label>
+
+                    <label class="flex items-center gap-2 cursor-pointer">
+                        <input type="radio" name="payment" value="momo"
+                        ${state.phuongThucThanhToan === "momo" ? "checked" : ""}/>
+                        MoMo
+                    </label>
+
+                </div>
+
+                <!-- QR -->
+                <div id="qrBox" class="mt-4 text-center"></div>
+            </div>
+
+            <button onclick="thanhToan()"
+                class="w-full bg-indigo-600 text-white py-3 rounded-xl hover:bg-indigo-700 transition">
+                Thanh toán
+            </button>
         </div>
     `
-    // remove class hidden của popup giỏ hàng để hiển thị popup
-    el.popupGioHang.classList.remove("hidden")
+
+    bindPaymentEvent()
+    renderQR()
+}
+
+// ================= CHECKOUT =================
+window.thanhToan = () => {
+
+    if (state.gioHang.length === 0) {
+        return alert("Giỏ hàng trống")
+    }
+
+    if (!state.phuongThucThanhToan) {
+        return alert("Chọn phương thức thanh toán")
+    }
+
+    alert(`Thanh toán thành công bằng ${state.phuongThucThanhToan}`)
+
+    state.gioHang = []
+    capNhatSoLuongGioHang()
+    renderGioHang()
 }
