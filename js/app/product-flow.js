@@ -71,12 +71,7 @@ window.showChiTietSP = (phoneId) => {
         🛒 Thêm vào giỏ
       </button>
 
-      <button 
-        onclick="muaNgay(${phone.id})"
-        class="flex-1 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-3 rounded-xl shadow-md transition-all active:scale-95"
-      >
-        ⚡ Mua ngay
-      </button>
+  
     </div>
 
   </div>
