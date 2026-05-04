@@ -1,5 +1,6 @@
 import { state, el } from "./core.js"
 import { capNhatSoLuongGioHang } from './product-flow.js'
+import { saveCart } from "./product-flow.js"
 
 // ================= QUANTITY =================
 window.tangSoLuong = (phoneId) => {
@@ -26,6 +27,8 @@ window.giamSoLuong = (phoneId) => {
 
 window.xoaSanPham = (phoneId) => {
     state.gioHang = state.gioHang.filter(p => p.id != phoneId)
+
+    saveCart()
 
     capNhatSoLuongGioHang()
     renderGioHang()

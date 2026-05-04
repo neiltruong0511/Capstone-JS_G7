@@ -1,4 +1,5 @@
 import { el, state, API_URL } from "./core.js"
+import { renderGioHang } from "./cart-flow.js"
 
 // ================= POPUP CHI TIẾT =================
 window.showChiTietSP = (phoneId) => {
@@ -82,8 +83,12 @@ window.showChiTietSP = (phoneId) => {
 }
 
 //=========== Lưu giỏ hàng vào localStorage ===========
-const saveCart = () => {
-    localStorage.setItem("gioHang", JSON.stringify(state.gioHang))
+export const saveCart = () => {
+    try {
+        localStorage.setItem("gioHang", JSON.stringify(state.gioHang))
+    } catch (e) {
+        console.error("Lỗi khi lưu giỏ hàng:", e)
+    }
 }
 
 // ============ Thông báo sản phẩm đc thêm ==========
@@ -125,15 +130,16 @@ const showToast = (message) => {
 
 //======= Load lại khi reload trang ==========
 export const loadCart = () => {
-    const data = localStorage.getItem("gioHang")
+    try {
+        const data = localStorage.getItem("gioHang")
 
-    if (data) {
-        state.gioHang = JSON.parse(data)
-    } else {
+        state.gioHang = data ? JSON.parse(data) : []
+    } catch (e) {
+        console.error("Lỗi parse localStorage:", e)
         state.gioHang = []
     }
 
-    capNhatSoLuongGioHang()
+    capNhatSoLuongGioHang() 
 }
 
 // ================= GIỎ HÀNG =================
