@@ -64,9 +64,11 @@ export const showMessage = (message, type = "info") => {
     el.messageBox.className = "rounded-lg px-5 py-4 font-medium message-box"
     
     if (type === "success") {
-        el.messageBox.classList.add("bg-gradient-to-br from-emerald-500 to-emerald-600 text-white border-l-4 border-emerald-500")
+        const classes = "bg-gradient-to-br from-emerald-500 to-emerald-600 text-white border-l-4 border-emerald-500".split(' ')
+        el.messageBox.classList.add(...classes)
     } else if (type === "error") {
-        el.messageBox.classList.add("bg-gradient-to-br from-red-500 to-red-600 text-white border-l-4 border-red-500")
+        const classes = "bg-gradient-to-br from-red-500 to-red-600 text-white border-l-4 border-red-500".split(' ')
+        el.messageBox.classList.add(...classes)
     }
     
     setTimeout(() => {
