@@ -8,7 +8,7 @@ export const locSanPham = () => {
     const sortBy = el.sortDirection.value
 
     // Lọc theo keyword
-    let filtered = danhSachSP
+    let filtered = [...danhSachSP]
     if (keyword) {
         filtered = danhSachSP.filter(phone =>
             phone.name.toLowerCase().includes(keyword) ||
